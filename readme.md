@@ -4,12 +4,7 @@ magent
 
 # install magent
 ```shell
-cd ./env
-./build.sh
-
-vim ~/.zshrc
-export PYTHONPATH=./env/python:${PYTHONPATH}
-source ~/.zshrc
+pip install magent
 ```
 
 # train in battle
