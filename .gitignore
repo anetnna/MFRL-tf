@@ -1,0 +1,5 @@
+data/
+*.sh
+__pycache__/
+gifs&imgs/
+supplementary_trail/
