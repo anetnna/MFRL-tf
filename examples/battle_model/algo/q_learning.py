@@ -167,7 +167,9 @@ class AttentionMFQ(base.ValueNet):
 
 class MEMFQ(base.ValueNet):
     def __init__(self, sess, name, handle, env, sub_len, eps=1.0, update_every=5, memory_size=2**10, batch_size=64):
-        self.K = 2
+        self.K = 3
+        self.dummy_action = tf.convert_to_tensor(np.arange(env.get_action_space(handle)[0]))
+
         super().__init__(sess, env, handle, name, use_mf=True, update_every=update_every)
 
         config = {
@@ -183,6 +185,7 @@ class MEMFQ(base.ValueNet):
         self.train_ct = 0
         self.replay_buffer = tools.MemoryGroup(**config)
         self.update_every = update_every
+        
     
     def _construct_net(self, active_func=None, reuse=False):
         conv1 = tf.layers.conv2d(self.obs_input, filters=32, kernel_size=3,
@@ -196,20 +199,23 @@ class MEMFQ(base.ValueNet):
         h_emb = tf.layers.dense(self.feat_input, units=32, activation=active_func,
                                 name="Dense-Emb", reuse=reuse)
 
-        concat_layer = tf.concat([h_obs, h_emb], axis=1)
+        obs_concat_layer = tf.concat([h_obs, h_emb], axis=1)
 
         # compute moment
-        act_moments = [tf.pow(self.act_prob_input,t) for t in range(self.K)]
+        act_emb_layer = tf.keras.layers.Embedding(self.num_actions, 8)
+        
+        act_emb = act_emb_layer(self.dummy_action)
 
         moment_emb = []
-        for t in range(1,self.K+1):
-            moment_emb.append(tf.layers.dense(act_moments[t-1], units=32, activation=active_func, name=f'Moment-Emb-{t}'))
-        
-        moment_concat_layer = tf.concat(moment_emb, axis=1)
+        for t in range(self.K):
+            act_emb_moment = tf.matmul(self.act_prob_input, tf.pow(act_emb,t+1))
+            moment_emb.append(tf.layers.dense(act_emb_moment, units=32, activation=active_func, name=f'Moment-Emb-{t}'))
 
-        h_moment = tf.layers.dense(moment_concat_layer, units=64, activation=active_func, name="Dense-Moment-Emb")
+        moment_emb = tf.concat(moment_emb, axis=1)
 
-        concat_layer = tf.concat([concat_layer, h_moment], axis=1)
+        h_moment = tf.layers.dense(moment_emb, units=64, activation=active_func, name="Dense-Moment-Emb")
+
+        concat_layer = tf.concat([obs_concat_layer, h_moment], axis=1)
         dense2 = tf.layers.dense(concat_layer, units=128, activation=active_func, name="Dense2")
         out = tf.layers.dense(dense2, units=64, activation=active_func, name="Dense-Out")
 

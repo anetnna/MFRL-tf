@@ -98,7 +98,6 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every, eps=1.
     total_rewards = [[] for _ in range(n_group)]
 
     former_act_prob = [np.zeros((1, env.get_action_space(handles[0])[0])), np.zeros((1, env.get_action_space(handles[1])[0]))]
-
     ########################
     # Actor start sampling #
     ########################
@@ -113,10 +112,7 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every, eps=1.
         # Choose action #
         #################
         for i in range(n_group):
-            if 'causal' in models[i].name:
-                former_act_prob[i] = np.tile(former_act_prob[i], (len(alive_idx[i]), 1)) if step_ct == 0 else former_act_prob[i][alive_idx[i]]  # filter dead agent
-            else:  # former_act_prob[i] already has shape [len(obs[i][0]), n_action[i]]
-                former_act_prob[i] = np.tile(former_act_prob[i], (len(alive_idx[i]), 1))
+            former_act_prob[i] = np.tile(former_act_prob[i], (len(alive_idx[i]), 1))
             acts[i][alive_idx[i]], _ = models[i].act(state=obs[i], prob=former_act_prob[i], eps=eps, train=True)
 
         for i in range(n_group):
@@ -129,24 +125,23 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every, eps=1.
             rewards[i] = env.get_reward(handles[i])
             alives[i] = env.get_alive(handles[i])
 
-        buffer = {'state': obs[0], 'acts': acts[0][alive_idx[0]], 'rewards': rewards[0], 'alives': alives[0], 'ids': ids[0],
-                  'prob': former_act_prob[0]}
+        buffer = {
+            'state': obs[0], 'acts': acts[0][alive_idx[0]], 'rewards': rewards[0], 
+            'alives': alives[0], 'ids': ids[0], 
+        }
+  
+        buffer['prob'] = former_act_prob[0]      
 
         #############################
         # Calculate former_act_prob #
         #############################
         # obs, idx, te_arr may change its len every step, while acts, pi, former_act_prob, onehot_former_acts always keep its shape.
         for i in range(n_group):
-            if 'causal' in models[i].name:
-                onehot_former_acts = np.array(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])))  # t-1
-                te_arr = calculate_te(n_action[i], obs[i], acts[i], models[i], max_nums[i], alive_idx[i], eps, infer_method='random')
-                former_act_prob[i] = np.zeros((max_nums[i], n_action[i]))
-                former_act_prob[i][alive_idx[i]] = np.vstack([np.average(onehot_former_acts, axis=0, weights=te) for te in te_arr])
+            if 'me' in models[i].name:
+                former_act_prob[i] = np.sum(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])),axis=0, keepdims=True)
             else:
                 former_act_prob[i] = np.mean(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])), axis=0, keepdims=True)
-        
-
-
+            
         if train:
             models[0].flush_buffer(**buffer)
 
