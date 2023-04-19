@@ -13,7 +13,7 @@ class Color:
     ERROR = '\033[1;31m{}\033[0m'
 
 class ValueNet:
-    def __init__(self, sess, env, handle, name, update_every=5, use_mf=False, attention=False, learning_rate=1e-4, tau=0.005, gamma=0.95):
+    def __init__(self, sess, env, handle, name, update_every=5, use_mf=False, attention=False, learning_rate=5e-5, tau=0.005, gamma=0.95):
         # assert isinstance(env, GridWorld)
         self.env = env
         self.name = name
@@ -69,6 +69,7 @@ class ValueNet:
                 self.e_q_max = tf.reduce_sum(tf.multiply(self.act_one_hot, self.e_q), axis=1)
                 self.loss = tf.reduce_sum(tf.square(self.target_q_input - self.e_q_max) * self.mask) / tf.reduce_sum(self.mask)
                 self.train_op = tf.train.AdamOptimizer(self.lr).minimize(self.loss)
+
 
     def _construct_net(self, active_func=None, reuse=False):
         conv1 = tf.layers.conv2d(self.obs_input, filters=32, kernel_size=3,

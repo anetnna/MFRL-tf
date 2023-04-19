@@ -16,7 +16,7 @@ from examples.battle_model.senario_battle import play
 
 os.environ["WANDB_START_METHOD"] = "thread"
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = "1"
-os.environ['CUDA_VISIBLE_DEVICES'] = "6"
+os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 tf.disable_v2_behavior()
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

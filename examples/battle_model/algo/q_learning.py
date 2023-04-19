@@ -167,7 +167,7 @@ class AttentionMFQ(base.ValueNet):
 
 class MEMFQ(base.ValueNet):
     def __init__(self, sess, name, handle, env, sub_len, eps=1.0, update_every=5, memory_size=2**10, batch_size=64):
-        self.K = 3
+        self.moment = 3
         self.dummy_action = tf.convert_to_tensor(np.arange(env.get_action_space(handle)[0]))
 
         super().__init__(sess, env, handle, name, use_mf=True, update_every=update_every)
@@ -202,14 +202,17 @@ class MEMFQ(base.ValueNet):
         obs_concat_layer = tf.concat([h_obs, h_emb], axis=1)
 
         # compute moment
-        act_emb_layer = tf.keras.layers.Embedding(self.num_actions, 8)
+        act_emb_layer = tf.keras.layers.Embedding(self.num_actions, 8, name="Action-Emb")
         
         act_emb = act_emb_layer(self.dummy_action)
 
         moment_emb = []
-        for t in range(self.K):
-            act_emb_moment = tf.matmul(self.act_prob_input, tf.pow(act_emb,t+1))
-            moment_emb.append(tf.layers.dense(act_emb_moment, units=32, activation=active_func, name=f'Moment-Emb-{t}'))
+        for order in range(1,self.moment+1):
+            act_emb_moment_raw = tf.matmul(self.act_prob_input, tf.pow(act_emb,order))
+            normalization_layer = tf.keras.layers.LayerNormalization(name=f"Moment-LayerNorm-{order}")
+            act_emb_moment = normalization_layer(act_emb_moment_raw)
+           
+            moment_emb.append(tf.layers.dense(act_emb_moment, units=32, activation=active_func, name=f'Moment-Emb-{order}'))
 
         moment_emb = tf.concat(moment_emb, axis=1)
 

@@ -137,10 +137,10 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every, eps=1.
         #############################
         # obs, idx, te_arr may change its len every step, while acts, pi, former_act_prob, onehot_former_acts always keep its shape.
         for i in range(n_group):
-            if 'me' in models[i].name:
-                former_act_prob[i] = np.sum(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])),axis=0, keepdims=True)
-            else:
-                former_act_prob[i] = np.mean(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])), axis=0, keepdims=True)
+            # if 'me' in models[i].name:
+                # former_act_prob[i] = np.sum(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])),axis=0, keepdims=True)
+            # else:
+            former_act_prob[i] = np.mean(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])), axis=0, keepdims=True)
             
         if train:
             models[0].flush_buffer(**buffer)
@@ -296,10 +296,7 @@ def battle(env, n_round, map_size, max_steps, handles, models, print_every, eps=
         # Choose action #
         #################
         for i in range(n_group):
-            if 'causal' in models[i].name:
-                former_act_prob[i] = np.tile(former_act_prob[i], (len(alive_idx[i]), 1)) if step_ct == 0 else former_act_prob[i][alive_idx[i]]  # filter dead agent
-            else:  # former_act_prob[i] already has shape [len(obs[i][0]), n_action[i]]
-                former_act_prob[i] = np.tile(former_act_prob[i], (len(alive_idx[i]), 1))
+            former_act_prob[i] = np.tile(former_act_prob[i], (len(alive_idx[i]), 1))
             acts[i][alive_idx[i]], _ = models[i].act(state=obs[i], prob=former_act_prob[i], eps=eps, train=False)
 
         for i in range(n_group):
@@ -313,16 +310,11 @@ def battle(env, n_round, map_size, max_steps, handles, models, print_every, eps=
         #############################
         # obs, idx, te_arr may change its len every step, while acts, pi, former_act_prob, onehot_former_acts always keep its shape.
         for i in range(n_group):
-            if 'causal' in models[i].name:
-                onehot_former_acts = np.array(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])))  # t-1
-                te_arr = calculate_te(n_action[i], obs[i], acts[i], models[i], max_nums[i], alive_idx[i], eps, infer_method='weight')
-                if i == 0:
-                    te_arr_lf = te_arr
-                former_act_prob[i] = np.zeros((max_nums[i], n_action[i]))
-                # former_act_prob[i][alive_idx[i]] = np.vstack([np.average(onehot_former_acts, axis=0, weights=te) for te in te_arr])
-            else:
-                former_act_prob[i] = np.mean(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])), axis=0,
-                                             keepdims=True)
+            # if 'me' in models[i].name:
+                # former_act_prob[i] = np.sum(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])),axis=0, keepdims=True)
+            # else:
+            former_act_prob[i] = np.mean(list(map(lambda x: np.eye(n_action[i])[x], acts[i][alive_idx[i]])), axis=0, keepdims=True)
+            
 
         # Visualize the weight of each interaction
         if render:
@@ -368,8 +360,8 @@ def battle(env, n_round, map_size, max_steps, handles, models, print_every, eps=
 
         step_ct += 1
 
-        if step_ct % print_every == 0:
-            print("> step #{}, info: {}".format(step_ct, info))
+        # if step_ct % print_every == 0:
+            # print("> step #{}, info: {}".format(step_ct, info))
 
     for i in range(n_group):
         mean_rewards[i] = sum(mean_rewards[i]) / len(mean_rewards[i])
