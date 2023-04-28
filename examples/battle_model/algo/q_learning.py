@@ -151,7 +151,7 @@ class AttentionMFQ(base.ValueNet):
         model_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, self.name_scope)
         saver = tf.train.Saver(model_vars)
 
-        file_path = os.path.join(dir_path, "mfq_{}".format(step))
+        file_path = os.path.join(dir_path, "attention_mfq_{}".format(step))
         saver.save(self.sess, file_path)
 
         print("[*] Model saved at: {}".format(file_path))
@@ -159,7 +159,7 @@ class AttentionMFQ(base.ValueNet):
     def load(self, dir_path, step=0):
         model_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, self.name_scope)
         saver = tf.train.Saver(model_vars)
-        file_path = os.path.join(dir_path, "mfq_{}".format(step))
+        file_path = os.path.join(dir_path, "attention_mfq_{}".format(step))
         saver.restore(self.sess, file_path)
 
         print("[*] Loaded model from {}".format(file_path))
@@ -249,7 +249,7 @@ class MEMFQ(base.ValueNet):
         model_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, self.name_scope)
         saver = tf.train.Saver(model_vars)
 
-        file_path = os.path.join(dir_path, "mfq_{}".format(step))
+        file_path = os.path.join(dir_path, "me_mfq_{}".format(step))
         saver.save(self.sess, file_path)
 
         print("[*] Model saved at: {}".format(file_path))
@@ -257,7 +257,7 @@ class MEMFQ(base.ValueNet):
     def load(self, dir_path, step=0):
         model_vars = tf.get_collection(tf.GraphKeys.GLOBAL_VARIABLES, self.name_scope)
         saver = tf.train.Saver(model_vars)
-        file_path = os.path.join(dir_path, "mfq_{}".format(step))
+        file_path = os.path.join(dir_path, "me_mfq_{}".format(step))
         saver.restore(self.sess, file_path)
 
         print("[*] Loaded model from {}".format(file_path))

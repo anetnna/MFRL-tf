@@ -2,6 +2,7 @@ import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior() 
 import numpy as np
 
+"""
 order = 3
 dummy_action = tf.convert_to_tensor(np.arange(21))
 act_prob_input = tf.convert_to_tensor(np.ones((1,21))/21.0,dtype=tf.float32)
@@ -19,3 +20,12 @@ with tf.Session() as sess:
     #print(sess.run(dummy_action))
     print(sess.run(act_emb_moment_raw))
     print(sess.run(act_emb_moment))
+"""
+
+state_input = tf.placeholder(tf.float32, [None, 32], 'state')
+l1 = tf.layers.dense(state_input, 256, tf.nn.relu)
+
+s = np.zeros((10,25,32))
+init = tf.global_variables_initializer()
+with tf.Session() as sess:
+    sess.run(l1, {state_input:s})
