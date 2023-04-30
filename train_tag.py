@@ -8,14 +8,14 @@ import time
 
 import tensorflow.compat.v1 as tf
 import numpy as np
-# from examples.mpe_tag.algo import spawn_ai
-# from examples.mpe_tag.algo import tools
-# from examples.mpe_tag.trainer_tag import play
+from examples.tag_model.algo import spawn_ai
+from examples.tag_model.algo import tools
+from examples.tag_model.senario_tag import play
 
-from MPE.make_env import make_env
+from env.mpe.make_env import make_env
 
 os.environ["WANDB_START_METHOD"] = "thread"
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = "1"
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = "1"
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
 
 tf.disable_v2_behavior()
@@ -45,9 +45,9 @@ def linear_decay(epoch, x, y):
             break
     return eps
 
-def test_env():
-    env = make_env('exp_tag')
-    print(env.action_space)
+def test_env(env):
+    print('action dim:', env.action_space[0].shape[0], env.action_space[1].shape[0])
+    print('obs dim:', env.observation_space[0].shape[0], env.observation_space[1].shape[0])
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -68,8 +68,7 @@ if __name__ == '__main__':
     # Initialize the environment
     
     env = make_env('exp_tag')
-
-
+    
     tf_config = tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)
     tf_config.gpu_options.allow_growth = True
 
@@ -96,4 +95,4 @@ if __name__ == '__main__':
     for k in range(start_from, start_from + args.n_round):
         eps = linear_decay(k, [0, int(args.n_round * 0.8), args.n_round], [1, 0.2, 0.1])
         runner.run(eps, k)
-
+    

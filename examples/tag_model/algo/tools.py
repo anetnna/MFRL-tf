@@ -64,21 +64,30 @@ class MetaBuffer(object):
 class EpisodesBufferEntry:
     """Entry for episode buffer"""
     def __init__(self):
-        self.views = []
-        self.features = []
+        self.states = []
         self.actions = []
         self.rewards = []
-        self.probs = []
+        self.dones = []
+        self.values = []
+        self.logps = []
+        self.meanactions = []
         self.terminal = False
 
-    def append(self, view, feature, action, reward, alive, probs=None):
-        self.views.append(view.copy())
-        self.features.append(feature.copy())
-        self.actions.append(action)
-        self.rewards.append(reward)
-        if probs is not None:
-            self.probs.append(probs)
-        if not alive:
+    def append(self, state, action, reward, done, value, logp, meanaction=None):
+        self.states.append(state)
+        if action is not None:
+            self.actions.append(action)
+        if reward is not None:
+            self.rewards.append(reward)
+        if done is not None:
+            self.dones.append(done)
+        if value is not None:
+            self.values.append(value)
+        if logp is not None:    
+            self.logps.append(logp)
+        if meanaction is not None:
+            self.meanactions.append(meanaction)
+        if done:
             self.terminal = True
 
 
@@ -92,29 +101,30 @@ class EpisodesBuffer(Buffer):
         self.use_mean = use_mean
 
     def push(self, **kwargs):
-        view, feature = kwargs['state']
+        state = kwargs['state']
         acts = kwargs['acts']
         rewards = kwargs['rewards']
-        alives = kwargs['alives']
+        dones = kwargs['dones']
+        values = kwargs['values']
+        logps = kwargs['logps']
         ids = kwargs['ids']
 
         if self.use_mean:
-            probs = kwargs['prob']
+            meanaction = kwargs['meanaction']
 
-        buffer = self.buffer
-        index = np.random.permutation(len(view))
-
-        for i in range(len(ids)):
-            i = index[i]
-            entry = buffer.get(ids[i])
+        index = np.random.permutation(len(state))
+        
+        for i in ids:
+            entry = self.buffer.get(i)
             if entry is None:
                 entry = EpisodesBufferEntry()
-                buffer[ids[i]] = entry
-
+                self.buffer[i] = entry
+            
             if self.use_mean:
-                entry.append(view[i], feature[i], acts[i], rewards[i], alives[i], probs=probs[i])
+                entry.append(state[i], acts[i], rewards[i], dones[i], values[i], logps[i], meanaction=meanaction[i])
             else:
-                entry.append(view[i], feature[i], acts[i], rewards[i], alives[i])
+                entry.append(state[i], acts[i], rewards[i], dones[i], values[i], logps[i])
+
 
     def reset(self):
         """ clear replay buffer """
@@ -200,9 +210,9 @@ class MemoryGroup(object):
             if self.agent.get(_id) is None:
                 self.agent[_id] = AgentMemory(self.obs_shape, self.feat_shape, self.act_n, self.sub_len, use_mean=self.use_mean)
             if self.use_mean:
-                self.agent[_id].append(obs0=kwargs['state'][0][i], feat0=kwargs['state'][1][i], act=kwargs['acts'][i], reward=kwargs['rewards'][i], alive=kwargs['alives'][i], prob=kwargs['prob'][i])
+                self.agent[_id].append(obs0=kwargs['state'][0][i], feat0=kwargs['state'][1][i], act=kwargs['acts'][i], reward=kwargs['rewards'][i], alive=kwargs['dones'][i], prob=kwargs['prob'][i])
             else:
-                self.agent[_id].append(obs0=kwargs['state'][0][i], feat0=kwargs['state'][1][i], act=kwargs['acts'][i], reward=kwargs['rewards'][i], alive=kwargs['alives'][i])
+                self.agent[_id].append(obs0=kwargs['state'][0][i], feat0=kwargs['state'][1][i], act=kwargs['acts'][i], reward=kwargs['rewards'][i], alive=kwargs['dones'][i])
 
     def tight(self):
         ids = list(self.agent.keys())

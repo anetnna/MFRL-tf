@@ -1,6 +1,12 @@
-import tensorflow.compat.v1 as tf
-tf.disable_v2_behavior() 
+# import tensorflow.compat.v1 as tf
+# tf.disable_v2_behavior() 
 import numpy as np
+
+def test_cuda():
+    import tensorflow as tf
+    print("Num GPUs Available: ", len(tf.config.experimental.list_physical_devices('GPU')))
+
+test_cuda()
 
 """
 order = 3
@@ -21,11 +27,11 @@ with tf.Session() as sess:
     print(sess.run(act_emb_moment_raw))
     print(sess.run(act_emb_moment))
 """
+def test2():
+    state_input = tf.placeholder(tf.float32, [None, 32], 'state')
+    l1 = tf.layers.dense(state_input, 256, tf.nn.relu)
 
-state_input = tf.placeholder(tf.float32, [None, 32], 'state')
-l1 = tf.layers.dense(state_input, 256, tf.nn.relu)
-
-s = np.zeros((10,25,32))
-init = tf.global_variables_initializer()
-with tf.Session() as sess:
-    sess.run(l1, {state_input:s})
+    s = np.zeros((10,25,32))
+    init = tf.global_variables_initializer()
+    with tf.Session() as sess:
+        sess.run(l1, {state_input:s})

@@ -13,7 +13,7 @@ class Color:
     ERROR = '\033[1;31m{}\033[0m'
 
 class ValueNet:
-    def __init__(self, sess, env, handle, name, update_every=5, use_mf=False, attention=False, learning_rate=1e-4, tau=0.005, gamma=0.95):
+    def __init__(self, sess, name, handle, env, update_every=5, use_mf=False, attention=False, learning_rate=1e-4, tau=0.005, gamma=0.95):
         # assert isinstance(env, GridWorld)
         self.env = env
         self.name = name
