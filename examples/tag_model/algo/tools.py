@@ -111,8 +111,6 @@ class EpisodesBuffer(Buffer):
 
         if self.use_mean:
             meanaction = kwargs['meanaction']
-
-        index = np.random.permutation(len(state))
         
         for i in ids:
             entry = self.buffer.get(i)
@@ -363,7 +361,7 @@ class Runner(object):
         if self.train:
             self.summary = SummaryObj(log_name=log_name, log_dir=log_dir)
 
-            summary_items = ['ave_agent_reward', 'total_reward', 'kill', "Sum_Reward", "Kill_Sum"]
+            summary_items = ['ave_agent_reward', 'mean_reward', 'kill', "Sum_Reward", "Kill_Sum"]
             self.summary.register(summary_items)  # summary register
             self.summary_items = summary_items
 
@@ -375,20 +373,20 @@ class Runner(object):
 
     def run(self, variant_eps, iteration, mean_reward=None):
         # pass
-        info = {'predator': {'total_reward': 0.},
-                'prey': {'total_reward': 0.}}
+        info = {'predator': {'mean_reward': 0.},
+                'prey': {'mean_reward': 0.}}
 
         render = (iteration + 1) % self.render_every if self.render_every > 0 else False
-        total_rewards = self.play(env=self.env, n_round=iteration, map_size=self.map_size, max_steps=self.max_steps, handles=self.handles,
+        mean_rewards = self.play(env=self.env, n_round=iteration, map_size=self.map_size, max_steps=self.max_steps, handles=self.handles,
                     models=self.models, print_every=50, eps=variant_eps, render=render, train=self.train)
 
         for i, tag in enumerate(['predator', 'prey']):
-            info[tag]['total_reward'] = total_rewards[i]
+            info[tag]['mean_reward'] = mean_rewards[i]
 
         # Change keys for logging both main and opponent
         log_info = dict()
         for key, value in info.items():
-            log_info.update({key + 'tot_rew': value['total_reward']})
+            log_info.update({key + 'tot_rew': value['mean_reward']})
 
         if self.train:
             print('\n[INFO] {}'.format(info))
@@ -397,8 +395,8 @@ class Runner(object):
                 self.models[0].save(self.model_dir + '-predator', iteration)
                 self.models[1].save(self.model_dir + '-prey', iteration)
         else:
-            mean_reward['predator'].append(info['predator']['total_reward'])
-            mean_reward['prey'].append(info['prey']['total_reward'])
+            mean_reward['predator'].append(info['predator']['mean_reward'])
+            mean_reward['prey'].append(info['prey']['mean_reward'])
             print('\n[INFO] {0}'.format(info))
 
 

@@ -8,12 +8,12 @@ import time
 import argparse
 
 import numpy as np
-import wandb
-from examples.mpe_tag.algo import spawn_ai
-from examples.mpe_tag.algo import tools
-from examples.mpe_tag.trainer_tag import test_play
+# import wandb
+from examples.tag_model.algo import spawn_ai
+from examples.tag_model.algo import tools
+from examples.tag_model.senario_tag import test
 
-from MPE.make_env import make_env
+from env.mpe.make_env import make_env
 
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = "2"
 os.environ['CUDA_VISIBLE_DEVICES'] = "0"
@@ -32,7 +32,7 @@ if __name__ == '__main__':
     parser.add_argument('--n_round', type=int, default=10, help='set the trainning round')
     parser.add_argument('--render', action='store_true', help='render or not (if true, will render every save)')
     parser.add_argument('--map_size', type=int, default=40, help='set the size of map')  # then the amount of agents is 64
-    parser.add_argument('--max_steps', type=int, default=400, help='set the max steps')
+    parser.add_argument('--max_steps', type=int, default=100, help='set the max steps')
     parser.add_argument('--idx', nargs='*', required=True)
 
     args = parser.parse_args()
@@ -43,8 +43,8 @@ if __name__ == '__main__':
     tf_config = tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)
     tf_config.gpu_options.allow_growth = True
 
-    predator_model_dir = os.path.join(BASE_DIR, 'data/models/{}-predator'.format(args.pred_dir))
-    prey_model_dir = os.path.join(BASE_DIR, 'data/models/{}-prey'.format(args.prey_dir))
+    predator_model_dir = os.path.join(BASE_DIR, 'data/models/{}-predator'.format(args.pred))
+    prey_model_dir = os.path.join(BASE_DIR, 'data/models/{}-prey'.format(args.prey))
 
     sess = tf.Session(config=tf_config)
     models = [spawn_ai(args.pred, sess, env, None, args.pred + 'predator', args.max_steps),
@@ -54,7 +54,7 @@ if __name__ == '__main__':
     models[0].load(predator_model_dir, step=args.idx[0])
     models[1].load(prey_model_dir, step=args.idx[1])
 
-    runner = tools.Runner(sess, env, None, args.map_size, args.max_steps, models, test_play, render_every=0)
+    runner = tools.Runner(sess, env, None, args.map_size, args.max_steps, models, test, render_every=0)
     reward_ls = {'predator': [], 'prey': []}
 
     for k in range(0, args.n_round):

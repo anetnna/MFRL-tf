@@ -2,7 +2,7 @@ from . import ac
 from . import q_learning
 
 AC = ac.ActorCritic
-MFAC = ac.MFAC
+MFAC = ac.MEMFAC
 IL = q_learning.DQN
 MFQ = q_learning.MFQ
 AttMFQ = q_learning.AttentionMFQ

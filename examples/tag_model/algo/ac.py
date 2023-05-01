@@ -66,14 +66,15 @@ class ActorCritic:
     def flush_buffer(self, **kwargs):
         self.replay_buffer.push(**kwargs)
     
-    def act(self, state):
-        pi, v, logp_pi = self.sess.run([self.pi, self.v, self.logp_pi], {self.s_ph: state})
+    def act(self, **kwargs):
+        inputs = {self.s_ph:kwargs['state']}  
+        pi, v, logp_pi = self.sess.run([self.pi, self.v, self.logp_pi], inputs)
         a = np.clip(pi, -1, 1)
         return a, v, logp_pi
     
-    def get_v(self, state):
-        if s.ndim < 2: s = s[np.newaxis, :]
-        return self.sess.run(self.v, {self.s_ph: state})[0, 0]
+    def get_v(self, **kwargs):
+        inputs = {self.s_ph:kwargs['state']}  
+        return self.sess.run(self.v, inputs)[0, 0]
 
     def _create_network(self):
         self.s_ph = tf.placeholder(tf.float32, [None, self.state_dim])
@@ -224,7 +225,7 @@ class MEMFAC:
         self.ent_coef = ent_coef  # coefficient of entropy in the total loss
 
         # init training buffers
-        self.replay_buffer = tools.EpisodesBuffer()
+        self.replay_buffer = tools.EpisodesBuffer(use_mean=True)
 
         with tf.variable_scope(name):
             self.name_scope = tf.get_variable_scope().name
@@ -237,14 +238,15 @@ class MEMFAC:
     def flush_buffer(self, **kwargs):
         self.replay_buffer.push(**kwargs)
     
-    def act(self, state):
-        pi, v, logp_pi = self.sess.run([self.pi, self.v, self.logp_pi], {self.s_ph: state})
+    def act(self, **kwargs):
+        inputs = {self.s_ph:kwargs['state'], self.m_ph:kwargs['meanaction']}  
+        pi, v, logp_pi = self.sess.run([self.pi, self.v, self.logp_pi], inputs)
         a = np.clip(pi, -1, 1)
         return a, v, logp_pi
     
-    def get_v(self, state, meanaction):
-        if s.ndim < 2: s = s[np.newaxis, :]
-        return self.sess.run(self.v, {self.s_ph: s, self.m_ph: meanaction})[0, 0]
+    def get_v(self, **kwargs):
+        inputs = {self.s_ph:kwargs['state'], self.m_ph:kwargs['meanaction']}  
+        return self.sess.run(self.v, inputs)[0, 0]
 
     def _create_network(self):
         self.s_ph = tf.placeholder(tf.float32, [None, self.state_dim])
@@ -290,7 +292,7 @@ class MEMFAC:
 
     def train(self):
         batch_data = self.replay_buffer.episodes()
-        self.replay_buffer = tools.EpisodesBuffer()
+        self.replay_buffer = tools.EpisodesBuffer(use_mean=True)
 
         # calc buffer size
         n = 0
@@ -316,7 +318,6 @@ class MEMFAC:
             meanaction = episode.meanactions
 
             T = len(reward)
-
             bootstrap_value = self.sess.run(self.v, feed_dict={self.s_ph: [state[-1]], self.m_ph: [meanaction[-1]]})[0]
             value = np.append(value, bootstrap_value)
             discount = (~done).astype(np.float32)*self.gamma
@@ -329,7 +330,7 @@ class MEMFAC:
             adv_buf[ptr:ptr+T] = advantage
             ret_buf[ptr:ptr+T] = return_
             logp_buf[ptr:ptr+T] = logp_
-            meanaction_buf[ptr:ptr+T] = meanaction
+            meanaction_buf[ptr:ptr+T] = meanaction[:-1]
 
             ptr += T
 

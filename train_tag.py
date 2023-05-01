@@ -51,7 +51,7 @@ def test_env(env):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--algo', type=str, choices={'attention_mfq', 'causal_mfq', 'ac', 'mfac', 'mfq', 'il'}, help='choose an algorithm from the preset', required=True)
+    parser.add_argument('--algo', type=str, choices={'ac', 'mfac'}, help='choose an algorithm from the preset', required=True)
     parser.add_argument('--agent_density', type=float, default=0.04, help='set the density of agents')
     parser.add_argument('--save_every', type=int, default=50, help='decide the self-play update interval')
     parser.add_argument('--checkpoint_dir', type=str, help='required when use bi-network')
@@ -59,7 +59,7 @@ if __name__ == '__main__':
     parser.add_argument('--n_round', type=int, default=100, help='set the trainning round')
     parser.add_argument('--render', action='store_true', help='render or not (if true, will render every save)')
     parser.add_argument('--map_size', type=int, default=40, help='set the size of map')  # then the amount of agents is 64
-    parser.add_argument('--max_steps', type=int, default=400, help='set the max steps')
+    parser.add_argument('--max_steps', type=int, default=100, help='set the max steps')
     parser.add_argument('--seed', type=int, default=0, help='setup random seed')
     parser.add_argument('--name', type=str, help='name of WandB file', required=False)
 
@@ -72,13 +72,8 @@ if __name__ == '__main__':
     tf_config = tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)
     tf_config.gpu_options.allow_growth = True
 
-    log_dir = os.path.join(BASE_DIR,'data/tmp/{}'.format(args.name))
-    model_dir = os.path.join(BASE_DIR, 'data/models/{}'.format(args.name))
-
-    if args.algo in ['causal_mfq', 'mfq', 'mfac', 'attention_mfq']:
-        use_mf = True
-    else:
-        use_mf = False
+    log_dir = os.path.join(BASE_DIR,'data/tmp/{}'.format(args.algo))
+    model_dir = os.path.join(BASE_DIR, 'data/models/{}'.format(args.algo))
 
     start_from = 0
 
