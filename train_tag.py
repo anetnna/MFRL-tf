@@ -51,7 +51,7 @@ def test_env(env):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('--algo', type=str, choices={'ac', 'mfac'}, help='choose an algorithm from the preset', required=True)
+    parser.add_argument('--algo', type=str, choices={'ac', 'mfac', 'mfac_bin', 'mfac_leg'}, help='choose an algorithm from the preset', required=True)
     parser.add_argument('--agent_density', type=float, default=0.04, help='set the density of agents')
     parser.add_argument('--save_every', type=int, default=50, help='decide the self-play update interval')
     parser.add_argument('--checkpoint_dir', type=str, help='required when use bi-network')
@@ -62,6 +62,7 @@ if __name__ == '__main__':
     parser.add_argument('--max_steps', type=int, default=100, help='set the max steps')
     parser.add_argument('--seed', type=int, default=0, help='setup random seed')
     parser.add_argument('--name', type=str, help='name of WandB file', required=False)
+    parser.add_argument('--moment_order', type=int, default=9, help='order of moment', required=False)
 
     args = parser.parse_args()
 
@@ -78,13 +79,13 @@ if __name__ == '__main__':
     start_from = 0
 
     sess = tf.Session(config=tf_config)
-    models = [spawn_ai(args.algo, sess, env, None, args.algo + 'predator', args.max_steps),
-              spawn_ai(args.algo, sess, env, None, args.algo + 'prey', args.max_steps)]
+    models = [spawn_ai(args.algo, sess, env, None, args.algo + 'predator', args.max_steps, args.moment_order),
+              spawn_ai(args.algo, sess, env, None, args.algo + 'prey', args.max_steps, args.moment_order)]
 
     sess.run(tf.global_variables_initializer())
     runner = tools.Runner(sess, env, None, args.map_size, args.max_steps, models, play,
                             render_every=args.save_every if args.render else 0, save_every=args.save_every, tau=0.01, log_name=args.algo,
-                            log_dir=log_dir, model_dir=model_dir, train=True)
+                            log_dir=log_dir, model_dir=model_dir, train=True, moment_order=args.moment_order)
 
 
     for k in range(start_from, start_from + args.n_round):

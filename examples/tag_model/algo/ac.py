@@ -201,7 +201,7 @@ class ActorCritic:
 
 
 class MEMFAC:
-    def __init__(self, sess, name, handle, env, value_coef=0.1, ent_coef=0.08, gamma=0.95, batch_size=64, learning_rate=1e-4):
+    def __init__(self, sess, name, handle, env, value_coef=0.1, ent_coef=0.08, gamma=0.95, batch_size=64, learning_rate=1e-4, moment_order=3):
         self.sess = sess
 
         self.name = name
@@ -219,6 +219,11 @@ class MEMFAC:
         self.critic_lr = 2e-4
         self.actor_update_steps = 4
         self.critic_update_steps = 4
+
+        if 'bin' in name:
+            self.moment_dim = moment_order ** 2
+        else:
+            self.moment_dim = moment_order * 2
 
 
         self.value_coef = value_coef  # coefficient of value in the total loss

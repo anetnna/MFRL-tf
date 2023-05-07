@@ -13,13 +13,50 @@ from env.mpe.make_env import make_env
 
 logging.basicConfig(level=logging.ERROR)
 
+num_pred = 30
+num_prey = 10
+
+def _legendre_multinomials(x, order):
+    if order == 0:
+        return 1
+    elif order == 1:
+        return x
+    else:
+        return (2.0*order-1.0) / (order*1.0) * x * _legendre_multinomials(x, order-1) - (order*1.0 - 1.0) / (order*1.0) * _legendre_multinomials(x, order-2)
+
+def _calc_bin_density(a, order=3, action_max=1, action_min=-1, dim=2):
+    bin_density = np.zeros(shape=(order, order), dtype=np.float)
+    action_tmp = (a - action_min) / (action_max - action_min) * (order - 0.01)
+    action_tmp = np.floor(action_tmp).astype(np.int)
+    
+    # print(f"action_tmp: {action_tmp}")
+    for i in range(len(action_tmp)):
+        bin_density[action_tmp[i][0], action_tmp[i][1]] += 1
+
+    bin_density = bin_density.flatten()
+    bin_density = bin_density / np.sum(bin_density)
+    return bin_density
 
 
-def _calc_moment(a, order=3):
+def _calc_moment(a, order=5, using_leg=False):
     moments = []
-    for i in range(order):
-        for j in range(order):
-            moments.append(np.power(a[0],i)*np.power(a[1],j))
+    for i in range(1, order+1):
+        # print(np.power(a[:,0], i))
+        # exit()
+        if using_leg:
+            moment_1 = np.mean(_legendre_multinomials(a[:,0], i))
+        else:
+            moment_1 = np.mean(np.power(a[:,0], i))
+        moment_1 = np.sign(moment_1) * np.power(np.abs(moment_1), 1/i)
+        if using_leg:
+            moment_2 = np.mean(_legendre_multinomials(a[:,1], i))
+        else:
+            moment_2 = np.mean(np.power(a[:,1], i))
+        moment_2 = np.sign(moment_2) * np.power(np.abs(moment_2), 1/i)
+        moments.append(moment_1)
+        moments.append(moment_2)
+
+
     moment = np.array(moments)
     return moment.reshape(1,-1)
 
@@ -27,7 +64,7 @@ def _calc_moment(a, order=3):
     # moment = np.array([1,a[0],a[1],a[0]*a[1],a[0]**2,a[1]**2])
     # return moment
 
-def play(env, n_round, map_size, max_steps, handles, models, print_every=10, record=False, render=False, eps=None, train=False):
+def play(env, n_round, map_size, max_steps, handles, models, print_every=10, record=False, render=False, eps=None, train=False, moment_order=4):
     env.reset()
 
     step_ct = 0
@@ -35,13 +72,13 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
     n_group = 2
 
     rewards = [None for _ in range(n_group)]
-    max_nums = [20, 40]  # 20 predators, 40 prey
+    max_nums = [num_pred, num_prey]  # num_pred predators, num_prey prey
 
 
     action_dim = [env.action_space[0].shape[0], env.action_space[-1].shape[0]]
 
     all_obs = env.reset()
-    obs = [all_obs[:20], all_obs[20:]]  # gym-style: return first observation
+    obs = [all_obs[:num_pred], all_obs[num_pred:]]  # gym-style: return first observation
     acts = [np.zeros((max_nums[i],action_dim[i]), dtype=np.int32) for i in range(n_group)]
     values = [np.zeros((max_nums[i],), dtype=np.int32) for i in range(n_group)]
     logprobs = [np.zeros((max_nums[i],), dtype=np.int32) for i in range(n_group)]
@@ -49,8 +86,14 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
     print("\n\n[*] ROUND #{0}, EPS: {1:.2f} NUMBER: {2}".format(n_round, eps, max_nums))
     mean_rewards = [[] for _ in range(n_group)]
     total_rewards = [[] for _ in range(n_group)]
-
-    former_meanaction = [np.zeros((1, 9)), np.zeros((1, 9))]
+    
+    former_meanaction = [[] for _ in range(n_group)]
+    for i in range(n_group):
+        if 'bin' in models[i].name:
+            former_meanaction[i] = np.zeros((1, moment_order ** 2))
+        else:
+            former_meanaction[i] = np.zeros((1, moment_order * 2))
+    # former_meanaction = [np.zeros((1, 8)), np.zeros((1, 8))]
 
     ########################
     # Actor start sampling #
@@ -67,15 +110,15 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
         old_obs = obs
         stack_act = np.concatenate(acts, axis=0)
         all_obs, all_rewards, all_done, _ = env.step(stack_act)
-        obs = [all_obs[:20], all_obs[20:]]
-        rewards = [all_rewards[:20], all_rewards[20:]]
+        obs = [all_obs[:num_pred], all_obs[num_pred:]]
+        rewards = [all_rewards[:num_pred], all_rewards[num_pred:]]
         done = all(all_done)
 
         predator_buffer = {
             'state': old_obs[0], 
             'acts': acts[0], 
             'rewards': rewards[0], 
-            'dones': all_done[:20],
+            'dones': all_done[:num_pred],
             'values': values[0], 
             'logps': logprobs[0],
             'ids': range(max_nums[0]), 
@@ -87,7 +130,7 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
             'state': old_obs[1], 
             'acts': acts[1], 
             'rewards': rewards[1], 
-            'dones': all_done[20:],
+            'dones': all_done[num_pred:],
             'values': values[1], 
             'logps': logprobs[1],
             'ids': range(max_nums[1]), 
@@ -107,7 +150,12 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
             models[1].flush_buffer(**prey_buffer)
         
         for i in range(n_group):
-            former_meanaction[i] = _calc_moment(np.mean(acts[i], axis=0))
+            if 'bin' in models[i].name:
+                former_meanaction[i] = _calc_bin_density(acts[i], order=moment_order)
+            else:
+                using_leg = 'leg' in models[i].name
+                former_meanaction[i] = _calc_moment(acts[i], order=moment_order, using_leg=using_leg)
+                # former_meanaction[i] = _calc_moment(np.mean(acts[i], axis=0), order=moment_order)
 
         for i in range(n_group):
             sum_reward = sum(rewards[i])
@@ -155,12 +203,12 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
         models[1].train()
 
     for i in range(n_group):
-        mean_rewards[i] = sum(total_rewards[i])/max_nums[i]/max_steps
+        mean_rewards[i] = sum(total_rewards[i])/max_nums[i]
 
     return mean_rewards
 
 
-def test(env, n_round, map_size, max_steps, handles, models, print_every=10, record=False, render=False, eps=None, train=False):
+def test(env, n_round, map_size, max_steps, handles, models, print_every=10, record=False, render=False, eps=None, train=False, moment_order=[4,4]):
     env.reset()
 
     step_ct = 0
@@ -168,12 +216,14 @@ def test(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
     n_group = 2
 
     rewards = [None for _ in range(n_group)]
-    max_nums = [20, 40]
+    max_nums = [num_pred, num_prey]
 
     action_dim = [env.action_space[0].shape[0], env.action_space[-1].shape[0]]
 
     all_obs = env.reset()
-    obs = [all_obs[:20], all_obs[20:]]  # gym-style: return first observation
+    obs = [all_obs[:num_pred], all_obs[num_pred:]]  # gym-style: return first observation
+    # print(obs[0][0].shape)
+    # exit()
     acts = [np.zeros((max_nums[i],action_dim[i]), dtype=np.int32) for i in range(n_group)]
     values = [np.zeros((max_nums[i],), dtype=np.int32) for i in range(n_group)]
     logprobs = [np.zeros((max_nums[i],), dtype=np.int32) for i in range(n_group)]
@@ -182,7 +232,12 @@ def test(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
     mean_rewards = [[] for _ in range(n_group)]
     total_rewards = [[] for _ in range(n_group)]
 
-    former_meanaction = [np.zeros((1, 9)), np.zeros((1, 9))]
+    former_meanaction = [[] for _ in range(n_group)]
+    for i in range(n_group):
+        if 'bin' in models[i].name:
+            former_meanaction[i] = np.zeros((1, moment_order[i] ** 2))
+        else:
+            former_meanaction[i] = np.zeros((1, moment_order[i] * 2))
 
     ########################
     # Actor start sampling #
@@ -196,20 +251,25 @@ def test(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
             former_meanaction[i] = np.tile(former_meanaction[i], (max_nums[i], 1))
             acts[i], values[i], logprobs[i] = models[i].act(state=obs[i], meanaction=former_meanaction[i])
         ## random predator
-        # acts[0] = np.random.rand(20,2)*2-1  
+        # acts[0] = np.random.rand(num_pred,2)*2-1  
 
         old_obs = obs
         stack_act = np.concatenate(acts, axis=0)
         all_obs, all_rewards, all_done, _ = env.step(stack_act)
-        obs = [all_obs[:20], all_obs[20:]]
-        rewards = [all_rewards[:20], all_rewards[20:]]
+        obs = [all_obs[:num_pred], all_obs[num_pred:]]
+        rewards = [all_rewards[:num_pred], all_rewards[num_pred:]]
         done = all(all_done)
 
         #############################
         # Calculate mean action #
         #############################
         for i in range(n_group):
-            former_meanaction[i] = _calc_moment(np.mean(acts[i], axis=0))
+            if 'bin' in models[i].name:
+                former_meanaction[i] = _calc_bin_density(acts[i], order=moment_order[i])
+            else:
+                using_leg = 'leg' in models[i].name
+                former_meanaction[i] = _calc_moment(acts[i], order=moment_order[i], using_leg=using_leg)
+                # former_meanaction[i] = _calc_moment(np.mean(acts[i], axis=0), order=moment_order)
 
         for i in range(n_group):
             sum_reward = sum(rewards[i])
@@ -223,6 +283,6 @@ def test(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
             print("> step #{}, info: {}".format(step_ct, info))
 
     for i in range(n_group):
-        mean_rewards[i] = sum(total_rewards[i])/max_nums[i]/max_steps
+        mean_rewards[i] = sum(total_rewards[i])/max_nums[i]
 
     return mean_rewards
