@@ -16,7 +16,7 @@ from examples.tag_model.senario_tag import test
 from env.mpe.make_env import make_env
 
 # os.environ['TF_CPP_MIN_LOG_LEVEL'] = "2"
-os.environ['CUDA_VISIBLE_DEVICES'] = "0"
+os.environ['CUDA_VISIBLE_DEVICES'] = "1"
 
 import tensorflow.compat.v1 as tf
 tf.disable_v2_behavior()
@@ -45,8 +45,11 @@ if __name__ == '__main__':
     tf_config = tf.ConfigProto(allow_soft_placement=True, log_device_placement=False)
     tf_config.gpu_options.allow_growth = True
 
+    # predator_model_dir = os.path.join(BASE_DIR, 'data/tag_logstd=-1.5/{}-predator'.format(args.pred))
+    # prey_model_dir = os.path.join(BASE_DIR, 'data/tag_logstd=-1.5/{}-prey'.format(args.prey))
     predator_model_dir = os.path.join(BASE_DIR, 'data/models/{}-predator'.format(args.pred))
     prey_model_dir = os.path.join(BASE_DIR, 'data/models/{}-prey'.format(args.prey))
+    
 
     sess = tf.Session(config=tf_config)
     models = [spawn_ai(args.pred, sess, env, None, args.pred + 'predator', args.max_steps, args.moment_order_1),

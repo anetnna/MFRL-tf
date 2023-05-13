@@ -251,7 +251,7 @@ def test(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
             former_meanaction[i] = np.tile(former_meanaction[i], (max_nums[i], 1))
             acts[i], values[i], logprobs[i] = models[i].act(state=obs[i], meanaction=former_meanaction[i])
         ## random predator
-        # acts[0] = np.random.rand(num_pred,2)*2-1  
+        # acts[1] = np.random.rand(num_pred,2)*2-1  
 
         old_obs = obs
         stack_act = np.concatenate(acts, axis=0)

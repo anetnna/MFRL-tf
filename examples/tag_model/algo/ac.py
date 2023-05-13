@@ -5,7 +5,9 @@ from scipy import signal
 
 from . import tools
 
-EPS = 1e-8
+# EPS = 1e-8
+EPS = 1e-10
+LOG_STD = -1.5
 
 def gaussian_likelihood(x, mu, log_std):
     pre_sum = -0.5 * (((x-mu)/(tf.exp(log_std)+EPS))**2 + 2*log_std + np.log(2*np.pi))
@@ -43,8 +45,8 @@ class ActorCritic:
         self.clip_ratio = 0.2
 
         self.batch_size = batch_size
-        self.actor_lr = 1e-4
-        self.critic_lr = 2e-4
+        self.actor_lr = 5e-5
+        self.critic_lr = 1e-4
         self.actor_update_steps = 4
         self.critic_update_steps = 4
 
@@ -86,17 +88,23 @@ class ActorCritic:
         self.all_phs = [self.s_ph, self.a_ph, self.adv_ph, self.ret_ph, self.logp_old_ph]
 
         # actor critic
-        x_pi = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
-        x_pi = tf.layers.dense(x_pi, 64, tf.nn.relu)
+        # x_pi = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
+        # x_pi = tf.layers.dense(x_pi, 64, tf.nn.relu)
+        x_pi = tf.layers.dense(self.s_ph, 256, tf.nn.relu)
         mu = tf.layers.dense(x_pi, self.action_dim, tf.nn.tanh)
-        log_std = tf.get_variable(name='log_std', initializer=-0.5*np.ones(self.action_dim, dtype=np.float32))
+        # log_std = tf.layers.dense(x_pi, self.action_dim, tf.nn.softplus)
+        # log_std = tf.get_variable(name='log_std', initializer=-1.0*np.ones(self.action_dim, dtype=np.float32))
+        log_std = tf.get_variable(name='log_std', initializer=LOG_STD*np.ones(self.action_dim, dtype=np.float32))
         std = tf.exp(log_std)
+        # std = tf.layers.dense(x_pi, self.action_dim, tf.nn.softplus)
+        # log_std = tf.log(std)
         self.pi = mu + tf.random_normal(tf.shape(mu)) * std
         self.logp = gaussian_likelihood(self.a_ph, mu, log_std)
         self.logp_pi = gaussian_likelihood(self.pi, mu, log_std)
     
-        x_v = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
-        x_v = tf.layers.dense(x_v, 64, tf.nn.relu)
+        # x_v = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
+        # x_v = tf.layers.dense(x_v, 64, tf.nn.relu)
+        x_v = tf.layers.dense(self.s_ph, 256, tf.nn.relu)
         self.v = tf.layers.dense(x_v, 1)
 
         # loss
@@ -208,15 +216,15 @@ class MEMFAC:
         self.view_space = (0,)
         self.state_dim = env.observation_space[0].shape[0] if 'predator' in name else env.observation_space[-1].shape[0]
         self.action_dim = env.action_space[0].shape[0] if 'predator' in name else env.action_space[-1].shape[0]
-        self.moment_dim = 9
+        # self.moment_dim = 9
         self.gamma = gamma
         self.lam = 1.0
         self.target_kl = 0.01
         self.clip_ratio = 0.2
 
         self.batch_size = batch_size
-        self.actor_lr = 1e-4
-        self.critic_lr = 2e-4
+        self.actor_lr = 5e-5
+        self.critic_lr = 1e-4
         self.actor_update_steps = 4
         self.critic_update_steps = 4
 
@@ -264,18 +272,32 @@ class MEMFAC:
         self.all_phs = [self.s_ph, self.a_ph, self.adv_ph, self.ret_ph, self.logp_old_ph]
 
         # actor critic
-        x_pi = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
-        x_pi = tf.layers.dense(x_pi, 64, tf.nn.relu)
-        mu = tf.layers.dense(x_pi, self.action_dim, tf.nn.tanh)
-        log_std = tf.get_variable(name='log_std', initializer=-0.5*np.ones(self.action_dim, dtype=np.float32))
+        # x_pi = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
+        # x_pi = tf.layers.dense(x_pi, 64, tf.nn.relu)
+        x_pi = tf.layers.dense(self.s_ph, 256, tf.nn.relu)
+        if 'bin' in self.name:
+            x_moment_pi = tf.layers.dense(self.m_ph, 64, tf.nn.relu)
+        else:
+            x_moment_pi = tf.layers.dense(self.m_ph, 64, tf.nn.relu)
+        x_concat_pi = tf.concat([x_pi, x_moment_pi], axis=1)
+        mu = tf.layers.dense(x_concat_pi, self.action_dim, tf.nn.tanh)
+        # log_std = tf.layers.dense(x_pi, self.action_dim, tf.nn.softplus)
+        # log_std = tf.get_variable(name='log_std', initializer=-10.0*np.ones(self.action_dim, dtype=np.float32))
+        log_std = tf.get_variable(name='log_std', initializer=LOG_STD*np.ones(self.action_dim, dtype=np.float32))
         std = tf.exp(log_std)
+        # std = tf.layers.dense(x_pi, self.action_dim, tf.nn.softplus) + 0.1
+        # log_std = tf.log(std)
         self.pi = mu + tf.random_normal(tf.shape(mu)) * std
         self.logp = gaussian_likelihood(self.a_ph, mu, log_std)
         self.logp_pi = gaussian_likelihood(self.pi, mu, log_std)
     
-        x_v = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
-        x_v = tf.layers.dense(x_v, 64, tf.nn.relu)
-        x_moment = tf.layers.dense(self.m_ph, 64, tf.nn.relu)
+        # x_v = tf.layers.dense(self.s_ph, 64, tf.nn.relu)
+        # x_v = tf.layers.dense(x_v, 64, tf.nn.relu)
+        x_v = tf.layers.dense(self.s_ph, 256, tf.nn.relu)
+        if 'bin' in self.name:
+            x_moment = tf.layers.dense(self.m_ph, 64, tf.nn.relu)
+        else:
+            x_moment = tf.layers.dense(self.m_ph, 64, tf.nn.relu)
         x_concat = tf.concat([x_v, x_moment], axis=1)
         self.v = tf.layers.dense(x_concat, 1)
 
