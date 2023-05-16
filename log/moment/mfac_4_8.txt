@@ -1,0 +1,706 @@
+[*] Loaded model from /home/huaze/ME_MF_MARL/MFRL-tf/data/models/mfac/4-predator/ac_999
+[*] Loaded model from /home/huaze/ME_MF_MARL/MFRL-tf/data/models/mfac/8-prey/ac_999
+
+
+[*] ROUND #0, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1563.0}
+> step #100, info: {'kill': 1924.0}
+
+[INFO] {'predator': {'mean_reward': 641.3333333333334}, 'prey': {'mean_reward': -3083.7902567362207}}
+
+
+[*] ROUND #1, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1179.0}
+> step #100, info: {'kill': 1453.0}
+
+[INFO] {'predator': {'mean_reward': 484.3333333333333}, 'prey': {'mean_reward': -2893.665885602216}}
+
+
+[*] ROUND #2, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1441.0}
+> step #100, info: {'kill': 1842.0}
+
+[INFO] {'predator': {'mean_reward': 614.0}, 'prey': {'mean_reward': -2965.3824186310653}}
+
+
+[*] ROUND #3, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1520.0}
+> step #100, info: {'kill': 1860.0}
+
+[INFO] {'predator': {'mean_reward': 620.0}, 'prey': {'mean_reward': -3047.949389832428}}
+
+
+[*] ROUND #4, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1700.0}
+> step #100, info: {'kill': 2136.0}
+
+[INFO] {'predator': {'mean_reward': 712.0}, 'prey': {'mean_reward': -3259.73989693237}}
+
+
+[*] ROUND #5, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1319.0}
+> step #100, info: {'kill': 1499.0}
+
+[INFO] {'predator': {'mean_reward': 499.6666666666667}, 'prey': {'mean_reward': -2856.441469461476}}
+
+
+[*] ROUND #6, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1494.0}
+> step #100, info: {'kill': 1858.0}
+
+[INFO] {'predator': {'mean_reward': 619.3333333333334}, 'prey': {'mean_reward': -2764.1526823474205}}
+
+
+[*] ROUND #7, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1816.0}
+> step #100, info: {'kill': 2110.0}
+
+[INFO] {'predator': {'mean_reward': 703.3333333333334}, 'prey': {'mean_reward': -2970.1765094680763}}
+
+
+[*] ROUND #8, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1383.0}
+> step #100, info: {'kill': 1775.0}
+
+[INFO] {'predator': {'mean_reward': 591.6666666666666}, 'prey': {'mean_reward': -3000.33645493441}}
+
+
+[*] ROUND #9, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1502.0}
+> step #100, info: {'kill': 1751.0}
+
+[INFO] {'predator': {'mean_reward': 583.6666666666666}, 'prey': {'mean_reward': -2736.07043978645}}
+
+
+[*] ROUND #10, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1674.0}
+> step #100, info: {'kill': 2059.0}
+
+[INFO] {'predator': {'mean_reward': 686.3333333333334}, 'prey': {'mean_reward': -3392.721120332957}}
+
+
+[*] ROUND #11, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1187.0}
+> step #100, info: {'kill': 1409.0}
+
+[INFO] {'predator': {'mean_reward': 469.6666666666667}, 'prey': {'mean_reward': -2666.620916070888}}
+
+
+[*] ROUND #12, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1636.0}
+> step #100, info: {'kill': 2164.0}
+
+[INFO] {'predator': {'mean_reward': 721.3333333333334}, 'prey': {'mean_reward': -3396.35210327811}}
+
+
+[*] ROUND #13, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1821.0}
+> step #100, info: {'kill': 2331.0}
+
+[INFO] {'predator': {'mean_reward': 777.0}, 'prey': {'mean_reward': -3336.4967466751127}}
+
+
+[*] ROUND #14, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1619.0}
+> step #100, info: {'kill': 2065.0}
+
+[INFO] {'predator': {'mean_reward': 688.3333333333334}, 'prey': {'mean_reward': -3349.816452955656}}
+
+
+[*] ROUND #15, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1578.0}
+> step #100, info: {'kill': 1845.0}
+
+[INFO] {'predator': {'mean_reward': 615.0}, 'prey': {'mean_reward': -2839.356968413641}}
+
+
+[*] ROUND #16, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1365.0}
+> step #100, info: {'kill': 1576.0}
+
+[INFO] {'predator': {'mean_reward': 525.3333333333334}, 'prey': {'mean_reward': -2649.377630550965}}
+
+
+[*] ROUND #17, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1553.0}
+> step #100, info: {'kill': 1997.0}
+
+[INFO] {'predator': {'mean_reward': 665.6666666666666}, 'prey': {'mean_reward': -3054.1746695370093}}
+
+
+[*] ROUND #18, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1564.0}
+> step #100, info: {'kill': 1805.0}
+
+[INFO] {'predator': {'mean_reward': 601.6666666666666}, 'prey': {'mean_reward': -2614.757647965875}}
+
+
+[*] ROUND #19, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1751.0}
+> step #100, info: {'kill': 2153.0}
+
+[INFO] {'predator': {'mean_reward': 717.6666666666666}, 'prey': {'mean_reward': -3100.0543096086876}}
+
+
+[*] ROUND #20, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1580.0}
+> step #100, info: {'kill': 1945.0}
+
+[INFO] {'predator': {'mean_reward': 648.3333333333334}, 'prey': {'mean_reward': -3093.7458442875336}}
+
+
+[*] ROUND #21, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1381.0}
+> step #100, info: {'kill': 1656.0}
+
+[INFO] {'predator': {'mean_reward': 552.0}, 'prey': {'mean_reward': -2909.483983612348}}
+
+
+[*] ROUND #22, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1656.0}
+> step #100, info: {'kill': 1868.0}
+
+[INFO] {'predator': {'mean_reward': 622.6666666666666}, 'prey': {'mean_reward': -2820.6302237615905}}
+
+
+[*] ROUND #23, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1492.0}
+> step #100, info: {'kill': 2014.0}
+
+[INFO] {'predator': {'mean_reward': 671.3333333333334}, 'prey': {'mean_reward': -3174.0236586022065}}
+
+
+[*] ROUND #24, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1409.0}
+> step #100, info: {'kill': 1710.0}
+
+[INFO] {'predator': {'mean_reward': 570.0}, 'prey': {'mean_reward': -2787.819602209407}}
+
+
+[*] ROUND #25, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1787.0}
+> step #100, info: {'kill': 2192.0}
+
+[INFO] {'predator': {'mean_reward': 730.6666666666666}, 'prey': {'mean_reward': -3179.468923900478}}
+
+
+[*] ROUND #26, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1667.0}
+> step #100, info: {'kill': 1888.0}
+
+[INFO] {'predator': {'mean_reward': 629.3333333333334}, 'prey': {'mean_reward': -3104.0017013388006}}
+
+
+[*] ROUND #27, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1500.0}
+> step #100, info: {'kill': 1915.0}
+
+[INFO] {'predator': {'mean_reward': 638.3333333333334}, 'prey': {'mean_reward': -2893.2564047701753}}
+
+
+[*] ROUND #28, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1534.0}
+> step #100, info: {'kill': 1983.0}
+
+[INFO] {'predator': {'mean_reward': 661.0}, 'prey': {'mean_reward': -3056.0446691818147}}
+
+
+[*] ROUND #29, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1641.0}
+> step #100, info: {'kill': 1978.0}
+
+[INFO] {'predator': {'mean_reward': 659.3333333333334}, 'prey': {'mean_reward': -3098.284244942536}}
+
+
+[*] ROUND #30, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1645.0}
+> step #100, info: {'kill': 2110.0}
+
+[INFO] {'predator': {'mean_reward': 703.3333333333334}, 'prey': {'mean_reward': -3290.0969901307813}}
+
+
+[*] ROUND #31, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1514.0}
+> step #100, info: {'kill': 1818.0}
+
+[INFO] {'predator': {'mean_reward': 606.0}, 'prey': {'mean_reward': -3182.681312202494}}
+
+
+[*] ROUND #32, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1862.0}
+> step #100, info: {'kill': 2346.0}
+
+[INFO] {'predator': {'mean_reward': 782.0}, 'prey': {'mean_reward': -3344.4513801112034}}
+
+
+[*] ROUND #33, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1607.0}
+> step #100, info: {'kill': 2047.0}
+
+[INFO] {'predator': {'mean_reward': 682.3333333333334}, 'prey': {'mean_reward': -3124.1250843372422}}
+
+
+[*] ROUND #34, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1712.0}
+> step #100, info: {'kill': 2074.0}
+
+[INFO] {'predator': {'mean_reward': 691.3333333333334}, 'prey': {'mean_reward': -3168.131577741358}}
+
+
+[*] ROUND #35, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1689.0}
+> step #100, info: {'kill': 2152.0}
+
+[INFO] {'predator': {'mean_reward': 717.3333333333334}, 'prey': {'mean_reward': -3199.619027476673}}
+
+
+[*] ROUND #36, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1609.0}
+> step #100, info: {'kill': 1915.0}
+
+[INFO] {'predator': {'mean_reward': 638.3333333333334}, 'prey': {'mean_reward': -3145.0229930968185}}
+
+
+[*] ROUND #37, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1981.0}
+> step #100, info: {'kill': 2554.0}
+
+[INFO] {'predator': {'mean_reward': 851.3333333333334}, 'prey': {'mean_reward': -3353.032623262101}}
+
+
+[*] ROUND #38, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1815.0}
+> step #100, info: {'kill': 2242.0}
+
+[INFO] {'predator': {'mean_reward': 747.3333333333334}, 'prey': {'mean_reward': -3397.2143123903797}}
+
+
+[*] ROUND #39, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1622.0}
+> step #100, info: {'kill': 1995.0}
+
+[INFO] {'predator': {'mean_reward': 665.0}, 'prey': {'mean_reward': -3034.4749440908463}}
+
+
+[*] ROUND #40, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1756.0}
+> step #100, info: {'kill': 2176.0}
+
+[INFO] {'predator': {'mean_reward': 725.3333333333334}, 'prey': {'mean_reward': -3178.1848617056776}}
+
+
+[*] ROUND #41, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1623.0}
+> step #100, info: {'kill': 1927.0}
+
+[INFO] {'predator': {'mean_reward': 642.3333333333334}, 'prey': {'mean_reward': -3068.2847651366133}}
+
+
+[*] ROUND #42, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1623.0}
+> step #100, info: {'kill': 1961.0}
+
+[INFO] {'predator': {'mean_reward': 653.6666666666666}, 'prey': {'mean_reward': -3048.082557034827}}
+
+
+[*] ROUND #43, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1499.0}
+> step #100, info: {'kill': 1701.0}
+
+[INFO] {'predator': {'mean_reward': 567.0}, 'prey': {'mean_reward': -2800.6766390252537}}
+
+
+[*] ROUND #44, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1639.0}
+> step #100, info: {'kill': 1935.0}
+
+[INFO] {'predator': {'mean_reward': 645.0}, 'prey': {'mean_reward': -3166.5847824492726}}
+
+
+[*] ROUND #45, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1688.0}
+> step #100, info: {'kill': 2205.0}
+
+[INFO] {'predator': {'mean_reward': 735.0}, 'prey': {'mean_reward': -3111.0460833887}}
+
+
+[*] ROUND #46, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1357.0}
+> step #100, info: {'kill': 1591.0}
+
+[INFO] {'predator': {'mean_reward': 530.3333333333334}, 'prey': {'mean_reward': -2786.031243858082}}
+
+
+[*] ROUND #47, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1798.0}
+> step #100, info: {'kill': 2081.0}
+
+[INFO] {'predator': {'mean_reward': 693.6666666666666}, 'prey': {'mean_reward': -3010.227431962972}}
+
+
+[*] ROUND #48, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1572.0}
+> step #100, info: {'kill': 1844.0}
+
+[INFO] {'predator': {'mean_reward': 614.6666666666666}, 'prey': {'mean_reward': -3198.8252676058046}}
+
+
+[*] ROUND #49, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1473.0}
+> step #100, info: {'kill': 1706.0}
+
+[INFO] {'predator': {'mean_reward': 568.6666666666666}, 'prey': {'mean_reward': -2987.535696930957}}
+
+
+[*] ROUND #50, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1691.0}
+> step #100, info: {'kill': 2141.0}
+
+[INFO] {'predator': {'mean_reward': 713.6666666666666}, 'prey': {'mean_reward': -3242.7448629692617}}
+
+
+[*] ROUND #51, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1432.0}
+> step #100, info: {'kill': 1592.0}
+
+[INFO] {'predator': {'mean_reward': 530.6666666666666}, 'prey': {'mean_reward': -2908.167071717028}}
+
+
+[*] ROUND #52, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1714.0}
+> step #100, info: {'kill': 2011.0}
+
+[INFO] {'predator': {'mean_reward': 670.3333333333334}, 'prey': {'mean_reward': -3076.6418930571103}}
+
+
+[*] ROUND #53, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1366.0}
+> step #100, info: {'kill': 1684.0}
+
+[INFO] {'predator': {'mean_reward': 561.3333333333334}, 'prey': {'mean_reward': -3053.3318850831133}}
+
+
+[*] ROUND #54, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1926.0}
+> step #100, info: {'kill': 2169.0}
+
+[INFO] {'predator': {'mean_reward': 723.0}, 'prey': {'mean_reward': -3132.847672784478}}
+
+
+[*] ROUND #55, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1442.0}
+> step #100, info: {'kill': 1694.0}
+
+[INFO] {'predator': {'mean_reward': 564.6666666666666}, 'prey': {'mean_reward': -2907.1761039886615}}
+
+
+[*] ROUND #56, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1619.0}
+> step #100, info: {'kill': 1971.0}
+
+[INFO] {'predator': {'mean_reward': 657.0}, 'prey': {'mean_reward': -3087.9077970424537}}
+
+
+[*] ROUND #57, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1731.0}
+> step #100, info: {'kill': 2161.0}
+
+[INFO] {'predator': {'mean_reward': 720.3333333333334}, 'prey': {'mean_reward': -3324.8388606016197}}
+
+
+[*] ROUND #58, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1704.0}
+> step #100, info: {'kill': 2048.0}
+
+[INFO] {'predator': {'mean_reward': 682.6666666666666}, 'prey': {'mean_reward': -3238.999387132262}}
+
+
+[*] ROUND #59, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1707.0}
+> step #100, info: {'kill': 2052.0}
+
+[INFO] {'predator': {'mean_reward': 684.0}, 'prey': {'mean_reward': -3235.173445675463}}
+
+
+[*] ROUND #60, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1894.0}
+> step #100, info: {'kill': 2465.0}
+
+[INFO] {'predator': {'mean_reward': 821.6666666666666}, 'prey': {'mean_reward': -3281.5942986903283}}
+
+
+[*] ROUND #61, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1715.0}
+> step #100, info: {'kill': 2014.0}
+
+[INFO] {'predator': {'mean_reward': 671.3333333333334}, 'prey': {'mean_reward': -3204.3806826265263}}
+
+
+[*] ROUND #62, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1515.0}
+> step #100, info: {'kill': 1755.0}
+
+[INFO] {'predator': {'mean_reward': 585.0}, 'prey': {'mean_reward': -2942.1756256127655}}
+
+
+[*] ROUND #63, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1464.0}
+> step #100, info: {'kill': 1964.0}
+
+[INFO] {'predator': {'mean_reward': 654.6666666666666}, 'prey': {'mean_reward': -2962.80085045917}}
+
+
+[*] ROUND #64, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1650.0}
+> step #100, info: {'kill': 1947.0}
+
+[INFO] {'predator': {'mean_reward': 649.0}, 'prey': {'mean_reward': -2978.4795282752134}}
+
+
+[*] ROUND #65, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1723.0}
+> step #100, info: {'kill': 2312.0}
+
+[INFO] {'predator': {'mean_reward': 770.6666666666666}, 'prey': {'mean_reward': -3356.847854751588}}
+
+
+[*] ROUND #66, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1510.0}
+> step #100, info: {'kill': 1841.0}
+
+[INFO] {'predator': {'mean_reward': 613.6666666666666}, 'prey': {'mean_reward': -2799.092106038979}}
+
+
+[*] ROUND #67, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1499.0}
+> step #100, info: {'kill': 1819.0}
+
+[INFO] {'predator': {'mean_reward': 606.3333333333334}, 'prey': {'mean_reward': -3160.541226245936}}
+
+
+[*] ROUND #68, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1634.0}
+> step #100, info: {'kill': 2009.0}
+
+[INFO] {'predator': {'mean_reward': 669.6666666666666}, 'prey': {'mean_reward': -3192.9252720775467}}
+
+
+[*] ROUND #69, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1571.0}
+> step #100, info: {'kill': 2018.0}
+
+[INFO] {'predator': {'mean_reward': 672.6666666666666}, 'prey': {'mean_reward': -3041.921628023353}}
+
+
+[*] ROUND #70, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1734.0}
+> step #100, info: {'kill': 2099.0}
+
+[INFO] {'predator': {'mean_reward': 699.6666666666666}, 'prey': {'mean_reward': -2880.801657140782}}
+
+
+[*] ROUND #71, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1781.0}
+> step #100, info: {'kill': 1950.0}
+
+[INFO] {'predator': {'mean_reward': 650.0}, 'prey': {'mean_reward': -3007.2177588160052}}
+
+
+[*] ROUND #72, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1536.0}
+> step #100, info: {'kill': 1896.0}
+
+[INFO] {'predator': {'mean_reward': 632.0}, 'prey': {'mean_reward': -3018.7183626863603}}
+
+
+[*] ROUND #73, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1501.0}
+> step #100, info: {'kill': 1701.0}
+
+[INFO] {'predator': {'mean_reward': 567.0}, 'prey': {'mean_reward': -3006.225974058832}}
+
+
+[*] ROUND #74, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1552.0}
+> step #100, info: {'kill': 2049.0}
+
+[INFO] {'predator': {'mean_reward': 683.0}, 'prey': {'mean_reward': -3249.1196360767044}}
+
+
+[*] ROUND #75, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1861.0}
+> step #100, info: {'kill': 2272.0}
+
+[INFO] {'predator': {'mean_reward': 757.3333333333334}, 'prey': {'mean_reward': -3256.8423241586693}}
+
+
+[*] ROUND #76, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1329.0}
+> step #100, info: {'kill': 1748.0}
+
+[INFO] {'predator': {'mean_reward': 582.6666666666666}, 'prey': {'mean_reward': -2826.6583984319495}}
+
+
+[*] ROUND #77, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1429.0}
+> step #100, info: {'kill': 1738.0}
+
+[INFO] {'predator': {'mean_reward': 579.3333333333334}, 'prey': {'mean_reward': -2958.3433409558356}}
+
+
+[*] ROUND #78, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1451.0}
+> step #100, info: {'kill': 1667.0}
+
+[INFO] {'predator': {'mean_reward': 555.6666666666666}, 'prey': {'mean_reward': -2900.6755295313005}}
+
+
+[*] ROUND #79, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1539.0}
+> step #100, info: {'kill': 1963.0}
+
+[INFO] {'predator': {'mean_reward': 654.3333333333334}, 'prey': {'mean_reward': -3177.2128143128443}}
+
+
+[*] ROUND #80, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1789.0}
+> step #100, info: {'kill': 2277.0}
+
+[INFO] {'predator': {'mean_reward': 759.0}, 'prey': {'mean_reward': -3205.120603178071}}
+
+
+[*] ROUND #81, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1657.0}
+> step #100, info: {'kill': 2014.0}
+
+[INFO] {'predator': {'mean_reward': 671.3333333333334}, 'prey': {'mean_reward': -3040.952743187744}}
+
+
+[*] ROUND #82, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1526.0}
+> step #100, info: {'kill': 1739.0}
+
+[INFO] {'predator': {'mean_reward': 579.6666666666666}, 'prey': {'mean_reward': -2857.8263949154857}}
+
+
+[*] ROUND #83, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1900.0}
+> step #100, info: {'kill': 2284.0}
+
+[INFO] {'predator': {'mean_reward': 761.3333333333334}, 'prey': {'mean_reward': -3292.485297783015}}
+
+
+[*] ROUND #84, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1447.0}
+> step #100, info: {'kill': 1778.0}
+
+[INFO] {'predator': {'mean_reward': 592.6666666666666}, 'prey': {'mean_reward': -2992.255572119764}}
+
+
+[*] ROUND #85, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1516.0}
+> step #100, info: {'kill': 1822.0}
+
+[INFO] {'predator': {'mean_reward': 607.3333333333334}, 'prey': {'mean_reward': -3003.908494312882}}
+
+
+[*] ROUND #86, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1704.0}
+> step #100, info: {'kill': 2066.0}
+
+[INFO] {'predator': {'mean_reward': 688.6666666666666}, 'prey': {'mean_reward': -2981.0085820137037}}
+
+
+[*] ROUND #87, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1638.0}
+> step #100, info: {'kill': 1995.0}
+
+[INFO] {'predator': {'mean_reward': 665.0}, 'prey': {'mean_reward': -3153.6332100438294}}
+
+
+[*] ROUND #88, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1441.0}
+> step #100, info: {'kill': 1823.0}
+
+[INFO] {'predator': {'mean_reward': 607.6666666666666}, 'prey': {'mean_reward': -3188.233219376246}}
+
+
+[*] ROUND #89, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1648.0}
+> step #100, info: {'kill': 2020.0}
+
+[INFO] {'predator': {'mean_reward': 673.3333333333334}, 'prey': {'mean_reward': -3067.929522750887}}
+
+
+[*] ROUND #90, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1707.0}
+> step #100, info: {'kill': 2153.0}
+
+[INFO] {'predator': {'mean_reward': 717.6666666666666}, 'prey': {'mean_reward': -3215.367306409725}}
+
+
+[*] ROUND #91, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1570.0}
+> step #100, info: {'kill': 1929.0}
+
+[INFO] {'predator': {'mean_reward': 643.0}, 'prey': {'mean_reward': -3108.6899898485844}}
+
+
+[*] ROUND #92, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1657.0}
+> step #100, info: {'kill': 2005.0}
+
+[INFO] {'predator': {'mean_reward': 668.3333333333334}, 'prey': {'mean_reward': -3146.9501473788823}}
+
+
+[*] ROUND #93, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1812.0}
+> step #100, info: {'kill': 2302.0}
+
+[INFO] {'predator': {'mean_reward': 767.3333333333334}, 'prey': {'mean_reward': -3122.3200598594385}}
+
+
+[*] ROUND #94, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1673.0}
+> step #100, info: {'kill': 2175.0}
+
+[INFO] {'predator': {'mean_reward': 725.0}, 'prey': {'mean_reward': -3283.0729941688187}}
+
+
+[*] ROUND #95, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1491.0}
+> step #100, info: {'kill': 1623.0}
+
+[INFO] {'predator': {'mean_reward': 541.0}, 'prey': {'mean_reward': -2915.648234416204}}
+
+
+[*] ROUND #96, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1737.0}
+> step #100, info: {'kill': 2182.0}
+
+[INFO] {'predator': {'mean_reward': 727.3333333333334}, 'prey': {'mean_reward': -3442.478190998901}}
+
+
+[*] ROUND #97, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1627.0}
+> step #100, info: {'kill': 2175.0}
+
+[INFO] {'predator': {'mean_reward': 725.0}, 'prey': {'mean_reward': -3143.033280472898}}
+
+
+[*] ROUND #98, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1793.0}
+> step #100, info: {'kill': 2261.0}
+
+[INFO] {'predator': {'mean_reward': 753.6666666666666}, 'prey': {'mean_reward': -3148.448258888077}}
+
+
+[*] ROUND #99, EPS: 0.00 NUMBER: 30
+> step #50, info: {'kill': 1113.0}
+> step #100, info: {'kill': 1235.0}
+
+[INFO] {'predator': {'mean_reward': 411.6666666666667}, 'prey': {'mean_reward': -2591.373373078475}}
+
+[*] >>> Reward: Predator[mfac] mean: 652.4966666666664| Prey[mfac] mean: -3069.9966212388986
+
+[*] >>> Reward: Predator[mfac] max: 851.3333333333334, min: 411.6666666666667, std:76.8201289449003| Prey[mfac] max: -2591.373373078475, min-3442.478190998901, std:185.41092943643702

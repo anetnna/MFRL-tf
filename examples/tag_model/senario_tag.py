@@ -40,21 +40,33 @@ def _calc_bin_density(a, order=3, action_max=1, action_min=-1, dim=2):
 
 def _calc_moment(a, order=5, using_leg=False):
     moments = []
-    for i in range(1, order+1):
-        # print(np.power(a[:,0], i))
-        # exit()
-        if using_leg:
-            moment_1 = np.mean(_legendre_multinomials(a[:,0], i))
-        else:
-            moment_1 = np.mean(np.power(a[:,0], i))
-        moment_1 = np.sign(moment_1) * np.power(np.abs(moment_1), 1/i)
-        if using_leg:
-            moment_2 = np.mean(_legendre_multinomials(a[:,1], i))
-        else:
-            moment_2 = np.mean(np.power(a[:,1], i))
-        moment_2 = np.sign(moment_2) * np.power(np.abs(moment_2), 1/i)
-        moments.append(moment_1)
-        moments.append(moment_2)
+    for i in range(order):
+        for j in range(order):
+            if (i == j == 0) or (i+j >= order):
+                continue
+            else:
+                if using_leg:
+                    moment_tmp = np.mean(_legendre_multinomials(a[:,0], i) * _legendre_multinomials(a[:,1], j))
+                else:
+                    moment_tmp = np.mean(np.power(a[:,0], i) * np.power(a[:,1], j))
+                        # print(moment_tmp)
+                moment_tmp = np.sign(moment_tmp) * np.power(np.abs(moment_tmp), 1/(i+j))
+                moments.append(moment_tmp)
+    # for i in range(1, order+1):
+    #     # print(np.power(a[:,0], i))
+    #     # exit()
+    #     if using_leg:
+    #         moment_1 = np.mean(_legendre_multinomials(a[:,0], i))
+    #     else:
+    #         moment_1 = np.mean(np.power(a[:,0], i))
+    #     moment_1 = np.sign(moment_1) * np.power(np.abs(moment_1), 1/i)
+    #     if using_leg:
+    #         moment_2 = np.mean(_legendre_multinomials(a[:,1], i))
+    #     else:
+    #         moment_2 = np.mean(np.power(a[:,1], i))
+    #     moment_2 = np.sign(moment_2) * np.power(np.abs(moment_2), 1/i)
+    #     moments.append(moment_1)
+    #     moments.append(moment_2)
 
 
     moment = np.array(moments)
@@ -92,7 +104,12 @@ def play(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
         if 'bin' in models[i].name:
             former_meanaction[i] = np.zeros((1, moment_order ** 2))
         else:
-            former_meanaction[i] = np.zeros((1, moment_order * 2))
+            # former_meanaction[i] = np.zeros((1, moment_order * 2))
+            # former_meanaction[i] = np.zeros((1, moment_order ** 2 - 1))
+            # print((moment_order + 2) * (moment_order - 1) / 2)
+            # exit()
+            # print(int((moment_order + 2) * (moment_order - 1) / 2)))
+            former_meanaction[i] = np.zeros((1, int((moment_order + 2) * (moment_order - 1) / 2)))
     # former_meanaction = [np.zeros((1, 8)), np.zeros((1, 8))]
 
     ########################
@@ -236,6 +253,10 @@ def test(env, n_round, map_size, max_steps, handles, models, print_every=10, rec
     for i in range(n_group):
         if 'bin' in models[i].name:
             former_meanaction[i] = np.zeros((1, moment_order[i] ** 2))
+        elif 'mfac' in models[i].name:
+            # former_meanaction[i] = np.zeros((1, moment_order[i] * 2))
+            # former_meanaction[i] = np.zeros((1, moment_order[i] ** 2 - 1))
+            former_meanaction[i] = np.zeros((1, int((moment_order[i] + 2) * (moment_order[i] - 1) / 2)))
         else:
             former_meanaction[i] = np.zeros((1, moment_order[i] * 2))
 

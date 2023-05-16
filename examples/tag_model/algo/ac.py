@@ -5,9 +5,8 @@ from scipy import signal
 
 from . import tools
 
-# EPS = 1e-8
-EPS = 1e-10
-LOG_STD = -1.5
+EPS = 1e-8
+LOG_STD = -1.7
 
 def gaussian_likelihood(x, mu, log_std):
     pre_sum = -0.5 * (((x-mu)/(tf.exp(log_std)+EPS))**2 + 2*log_std + np.log(2*np.pi))
@@ -45,10 +44,17 @@ class ActorCritic:
         self.clip_ratio = 0.2
 
         self.batch_size = batch_size
-        self.actor_lr = 5e-5
-        self.critic_lr = 1e-4
-        self.actor_update_steps = 4
-        self.critic_update_steps = 4
+        # self.actor_lr = 5e-5
+        # self.critic_lr = 1e-4
+        # self.actor_update_steps = 4
+        # self.critic_update_steps = 4
+
+        self.actor_lr = 3e-4
+        self.critic_lr = 3e-4
+        self.actor_update_steps = 2
+        self.critic_update_steps = 2
+        self.actor_global_step = tf.Variable(0, trainable=False)
+        self.critic_global_step = tf.Variable(0, trainable=False)
 
 
         self.value_coef = value_coef  # coefficient of value in the total loss
@@ -120,8 +126,12 @@ class ActorCritic:
         self.clipfrac = tf.reduce_mean(tf.cast(clipped, tf.float32))
 
         # train_op
-        self.train_pi = tf.train.AdamOptimizer(learning_rate=self.actor_lr).minimize(self.pi_loss)
-        self.train_v = tf.train.AdamOptimizer(learning_rate=self.critic_lr).minimize(self.v_loss)
+        actor_lr_decated = tf.train.linear_cosine_decay(self.actor_lr, self.actor_global_step, 2000)
+        critic_lr_decated = tf.train.linear_cosine_decay(self.critic_lr, self.critic_global_step, 2000)
+        self.train_pi = tf.train.AdamOptimizer(learning_rate=actor_lr_decated).minimize(self.pi_loss, self.actor_global_step)
+        self.train_v = tf.train.AdamOptimizer(learning_rate=critic_lr_decated).minimize(self.v_loss, self.critic_global_step)
+        # self.train_pi = tf.train.AdamOptimizer(learning_rate=self.actor_lr).minimize(self.pi_loss)
+        # self.train_v = tf.train.AdamOptimizer(learning_rate=self.critic_lr).minimize(self.v_loss)
 
     def train(self):
         batch_data = self.replay_buffer.episodes()
@@ -223,15 +233,23 @@ class MEMFAC:
         self.clip_ratio = 0.2
 
         self.batch_size = batch_size
-        self.actor_lr = 5e-5
-        self.critic_lr = 1e-4
-        self.actor_update_steps = 4
-        self.critic_update_steps = 4
+        # self.actor_lr = 5e-5
+        # self.critic_lr = 1e-4
+        # self.actor_update_steps = 4
+        # self.critic_update_steps = 4
+        self.actor_lr = 3e-4
+        self.critic_lr = 3e-4
+        self.actor_update_steps = 2
+        self.critic_update_steps = 2
+        self.actor_global_step = tf.Variable(0, trainable=False)
+        self.critic_global_step = tf.Variable(0, trainable=False)
 
         if 'bin' in name:
             self.moment_dim = moment_order ** 2
         else:
-            self.moment_dim = moment_order * 2
+            # self.moment_dim = moment_order * 2
+            # self.moment_dim = moment_order ** 2 - 1
+            self.moment_dim = int((moment_order + 2) * (moment_order - 1) / 2)
 
 
         self.value_coef = value_coef  # coefficient of value in the total loss
@@ -314,8 +332,12 @@ class MEMFAC:
         self.clipfrac = tf.reduce_mean(tf.cast(clipped, tf.float32))
 
         # train_op
-        self.train_pi = tf.train.AdamOptimizer(learning_rate=self.actor_lr).minimize(self.pi_loss)
-        self.train_v = tf.train.AdamOptimizer(learning_rate=self.critic_lr).minimize(self.v_loss)
+        actor_lr_decated = tf.train.linear_cosine_decay(self.actor_lr, self.actor_global_step, 2000)
+        critic_lr_decated = tf.train.linear_cosine_decay(self.critic_lr, self.critic_global_step, 2000)
+        self.train_pi = tf.train.AdamOptimizer(learning_rate=actor_lr_decated).minimize(self.pi_loss, self.actor_global_step)
+        self.train_v = tf.train.AdamOptimizer(learning_rate=critic_lr_decated).minimize(self.v_loss, self.critic_global_step)
+        # self.train_pi = tf.train.AdamOptimizer(learning_rate=self.actor_lr).minimize(self.pi_loss)
+        # self.train_v = tf.train.AdamOptimizer(learning_rate=self.critic_lr).minimize(self.v_loss)
 
     def train(self):
         batch_data = self.replay_buffer.episodes()

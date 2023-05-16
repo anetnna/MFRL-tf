@@ -393,8 +393,8 @@ class Runner(object):
             print('\n[INFO] {}'.format(info))
             if self.save_every and (iteration + 1) % self.save_every == 0:
                 print(Color.INFO.format('[INFO] Saving model ...'))
-                self.models[0].save(self.model_dir + '-predator', iteration)
-                self.models[1].save(self.model_dir + '-prey', iteration)
+                self.models[0].save(self.model_dir + '/' + str(self.moment_order) + '-predator', iteration)
+                self.models[1].save(self.model_dir + '/' + str(self.moment_order) + '-prey', iteration)
         else:
             mean_reward['predator'].append(info['predator']['mean_reward'])
             mean_reward['prey'].append(info['prey']['mean_reward'])

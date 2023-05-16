@@ -47,9 +47,16 @@ if __name__ == '__main__':
 
     # predator_model_dir = os.path.join(BASE_DIR, 'data/tag_logstd=-1.5/{}-predator'.format(args.pred))
     # prey_model_dir = os.path.join(BASE_DIR, 'data/tag_logstd=-1.5/{}-prey'.format(args.prey))
-    predator_model_dir = os.path.join(BASE_DIR, 'data/models/{}-predator'.format(args.pred))
-    prey_model_dir = os.path.join(BASE_DIR, 'data/models/{}-prey'.format(args.prey))
-    
+    if args.pred == 'mfac':
+        predator_model_dir = os.path.join(BASE_DIR, f'data/models/{args.pred}/{args.moment_order_1}-predator')
+    else:
+        predator_model_dir = os.path.join(BASE_DIR, f'data/models/{args.pred}-predator')
+        
+
+    if args.prey == 'mfac':
+        prey_model_dir = os.path.join(BASE_DIR, f'data/models/{args.prey}/{args.moment_order_2}-prey')
+    else:
+        prey_model_dir = os.path.join(BASE_DIR, f'data/models/{args.prey}-prey')
 
     sess = tf.Session(config=tf_config)
     models = [spawn_ai(args.pred, sess, env, None, args.pred + 'predator', args.max_steps, args.moment_order_1),
